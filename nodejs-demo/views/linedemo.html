@@ -1,0 +1,62 @@
+ <div>
+    	<table>
+        <thead>
+      <tr><th> </th><th>标题</th><th>时间</th><th>地点</th></tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td><input type="checkbox" name="choice" value=""></td>
+    <td>php100视屏1</td><td>2011</td><td>上海</td>
+   </tr>
+   <tr>
+    <td><input type="checkbox" name="choice" value=""></td>
+    <td>php100视屏2</td><td>2012</td><td>杭州</td>
+   </tr>
+   <tr>
+    <td><input type="checkbox" name="choice" value=""></td>
+    <td>php100视屏3</td><td>2011</td><td>济南</td>
+   </tr>
+   <tr>
+    <td><input type="checkbox" name="choice" value=""></td>
+    <td>php100视屏4</td><td>2012</td><td>北京</td>
+   </tr>
+   <tr>
+    <td><input type="checkbox" name="choice" value=""></td>
+    <td>php100视屏5</td><td>2011</td><td>武汉</td>
+   </tr>
+   <tr>
+    <td><input type="checkbox" name="choice" value=""></td>
+    <td>php100视屏6</td><td>2012</td><td>福州</td>
+   </tr>
+  
+  </tbody>
+  </table>
+
+    </div>
+    <script type="text/javascript">
+		$(document).ready(function () {
+		 //设置偶数行和奇数行
+		 $("tbody>tr:odd").addClass("ou");   //为奇数行设置样式(添加样式类)
+		 $("tbody>tr:even").addClass("dan");  // 为偶数行设置样式类
+		 $("tbody>tr:has(:checked)").addClass("ed");   //判断行是否被选中(返回布尔类型)添加样式类   // has(:checked)")   返回一个bool值  true/false
+
+		 // 搜索被选中 has(:checked)
+		 $('tbody>tr').click(function(){
+		  var hased = $(this).hasClass('ed');
+		 
+		  if(hased)
+		  {
+		         $(this).removeClass("ed").find(":input").attr("checked",false);
+		  }
+		  else
+		  {
+		 
+		      $(this).addClass("ed").find(":input").attr("checked",true);
+		  }
+
+		 });
+		      // 遍历指定触发函数
+
+		});
+
+    </script>
