@@ -9,16 +9,13 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var ejs = require('ejs');
 
-//var connect = require('connect');
-//var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/test');
-var session = require('express-session');
-// var SessionStore = require('session-mongoose')(session);
-// var store = new SessionStore({
-//   url: "mongodb://localhost/session",
-//   interval: 120000
-//   //connection: mongoose.connection
-// });
+var session = require('express-session'); 
+var MongoStore = require('connect-mongodb'); 
+var Db = require('mongodb').Db;
+var Server = require('mongodb').Server;
+var server_config = new Server('localhost', 27017, {auto_reconnect:true, native_parser: true});
+var db = new Db('session', server_config, {safe: false});  
+var mongo_store = new MongoStore({db: db, reapInterval: 3000}); // check every 3 seconds
 
 var app = express();
 
@@ -35,14 +32,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.use(express.session({
-//     secret: 'my secret',
-//     store: store,
-//     cookie: { maxAge: 900000 } // expire session in 15 min or 900 seconds
-// }));
 app.use(session({ resave: true,
                   saveUninitialized: true,
-                  secret: 'my secret' }));
+                  cookie: { maxAge: 900000 }, // expire session in 15 min or 900 seconds
+                  secret: 'my secret',
+                  store: mongo_store
+}));
+
 app.use(function(req, res, next){
   res.locals.user = req.session.user;
   var err = req.session.error;
