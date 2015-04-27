@@ -9,37 +9,49 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var ejs = require('ejs');
 
-var session = require('express-session'); 
-var MongoStore = require('connect-mongodb'); 
+var session = require('express-session');
+var MongoStore = require('connect-mongodb');
 var Db = require('mongodb').Db;
 var Server = require('mongodb').Server;
-var server_config = new Server('localhost', 27017, {auto_reconnect:true, native_parser: true});
-var db = new Db('session', server_config, {safe: false});  
-var mongo_store = new MongoStore({db: db, reapInterval: 3000}); // check every 3 seconds
+var server_config = new Server('localhost', 27017, {
+  auto_reconnect: true,
+  native_parser: true
+});
+var db = new Db('session', server_config, {
+  safe: false
+});
+var mongo_store = new MongoStore({
+  db: db,
+  reapInterval: 3000
+}); // check every 3 seconds
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('.html',require('ejs').renderFile);
+app.engine('.html', require('ejs').renderFile);
 app.set('view engine', 'html');
-
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 
-app.use(session({ resave: true,
-                  saveUninitialized: true,
-                  cookie: { maxAge: 900000 }, // expire session in 15 min or 900 seconds
-                  secret: 'my secret',
-                  store: mongo_store
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 900000
+  }, // expire session in 15 min or 900 seconds
+  secret: 'my secret',
+  store: mongo_store
 }));
 
-app.use(function(req, res, next){
+app.use(function(req, res, next) {
   res.locals.user = req.session.user;
   var err = req.session.error;
   delete req.session.error;
