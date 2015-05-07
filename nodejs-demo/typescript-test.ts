@@ -1,9 +1,7 @@
-declare module "url" {
-    export interface Url {
-        protocol?: string;
-        hostname?: string;
-        pathname?: string;
-    }
+/// <reference path="typings/node/node.d.ts" />
+/// <reference path="typings/fs-extra/fs-extra.d.ts" />
 
-    export function parse(urlStr: string, parseQueryString?, slashesDenoteHost?): Url;
-}
+import fs = require('fs-extra');
+import path = require('path');
+
+//path.
